@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using CommandAPI.Data;
+using CommandAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CommandAPIControllers
@@ -7,10 +9,19 @@ namespace CommandAPIControllers
     [ApiController]
     public class CommandsController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        private readonly ICommandAPIRepo _repository;
+
+        public CommandsController(ICommandAPIRepo repository)
         {
-            return new string[] {"this", "is", "hard", "coded"};
+            _repository = repository;
+        }
+        
+        [HttpGet]
+        public ActionResult<IEnumerable<Command>> GetAllCommands()
+        {
+            var commandItems = _repository.GetAllCommands();
+            
+            return Ok(commandItems);
         }
 
     }
