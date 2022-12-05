@@ -1,13 +1,19 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using CommandAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var dBConnectionStringBuilder = new NpgsqlConnectionStringBuilder();
+dBConnectionStringBuilder.ConnectionString = 
+    builder.Configuration.GetConnectionString("PostgreSqlConnection");
+    dBConnectionStringBuilder.Username = builder.Configuration["UserID"];
+    dBConnectionStringBuilder.Password = builder.Configuration["Password"];
+
+builder.Services.AddDbContext<CommandContext>(opt =>opt.UseNpgsql(dBConnectionStringBuilder.ConnectionString));
+
 builder.Services.AddControllers();
-builder.Services.AddScoped<ICommandAPIRepo, MockCommandAPIRepo>();
+builder.Services.AddScoped<ICommandAPIRepo, SqlCommandAPIRepo>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
