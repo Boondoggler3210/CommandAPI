@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using AutoMapper;
 using CommandAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,9 @@ dBConnectionStringBuilder.ConnectionString =
 builder.Services.AddDbContext<CommandContext>(opt =>opt.UseNpgsql(dBConnectionStringBuilder.ConnectionString));
 
 builder.Services.AddControllers();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddScoped<ICommandAPIRepo, SqlCommandAPIRepo>();
 var app = builder.Build();
 

@@ -1,3 +1,4 @@
+using System;
 using CommandAPI.Models;
 using System.Collections.Generic;
 
@@ -14,7 +15,12 @@ public class SqlCommandAPIRepo : ICommandAPIRepo
 
     public void CreateCommand(Command cmd)
     {
-        throw new NotImplementedException();
+        if(cmd == null)
+        {
+            throw new ArgumentNullException(nameof(cmd));
+        }
+
+        _context.CommandItems.Add(cmd);
     }
 
     public void DeleteCommand(Command cmd)
