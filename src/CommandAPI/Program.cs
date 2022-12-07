@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using AutoMapper;
 using CommandAPI.Data;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,10 @@ dBConnectionStringBuilder.ConnectionString =
 
 builder.Services.AddDbContext<CommandContext>(opt =>opt.UseNpgsql(dBConnectionStringBuilder.ConnectionString));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(s => 
+{
+    s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+});
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

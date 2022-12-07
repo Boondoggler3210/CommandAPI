@@ -6,7 +6,7 @@ public class CommandUpdateDto
 {
     [Required]
     [MaxLength(250)]
-    public string HotTo {get; set;}
+    public string HowTo {get; set;}
     
     [Required]
     public string Platform {get;set;}
